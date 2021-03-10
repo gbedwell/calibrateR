@@ -25,7 +25,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
                  "--------------------------------------------------------",
                  ""))
 
-    dat <- data.frame(sample = sample.list,
+    dat <- data.frame(sample = insert.list,
                       vector = vector.list)
 
     dat <- dat %>%
@@ -41,7 +41,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
     return(dat) }
 
   else{
-    dat <- data.frame(sample = sample.list,
+    dat <- data.frame(sample = insert.list,
                       vector = vector.list)
 
     dat <- dat %>%
