@@ -97,6 +97,9 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
 
     biorad.df <- cbind(biorad.df, mw.pred, rh.pred, biorad.mw.r.sq, biorad.rh.r.sq)
 
+    biorad.df <- biorad.df %>%
+      mutate(across(where(is.numeric), round, digits=2))
+
 
     return(biorad.df) }
 
@@ -197,6 +200,9 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
         dplyr::select(rh.pred, rh.lwr, rh.upr)
 
       biorad.pred <- cbind(biorad.pred, mw.pred, rh.pred)
+
+      biorad.pred <- biorad.pred %>%
+        mutate(across(where(is.numeric), round, digits=2))
 
       return(biorad.pred) }
 

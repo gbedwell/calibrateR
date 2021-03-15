@@ -35,6 +35,9 @@ bca <- function(prot.conc, blank.abs, std.abs, abs = NULL, dil.fac = NULL, plot 
 
     bca.df <- cbind(bca.df, conc.pred, bca.std.r.sq)
 
+    bca.df <- bca.df %>%
+      mutate(across(where(is.numeric), round, digits=2))
+
 
     return(bca.df) }
 
@@ -99,6 +102,9 @@ bca <- function(prot.conc, blank.abs, std.abs, abs = NULL, dil.fac = NULL, plot 
         dplyr::mutate(conc.pred.corr = conc.pred*df,
                       conc.lwr.corr = conc.lwr*df,
                       conc.upr.corr = conc.upr*df)
+
+      bca.pred <- bca.pred %>%
+        mutate(across(where(is.numeric), round, digits=2))
 
       return(bca.pred) }
 

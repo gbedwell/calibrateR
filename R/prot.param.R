@@ -78,11 +78,11 @@ prot.param <- function(aa.sequence, temp){
                          value = (((3*(combo[2,2])*(combo[5,2]))/(4*pi*6.022E+23))^(1/3))*10^7)
 
 
-  r.denat <- data.frame(parameter = "denatured radius (nm)",
+  r.denat <- data.frame(parameter = "est. denatured radius (nm)",
                         value = (2.21*(combo[1,2])^0.57)/10)
 
 
-  r.glob <- data.frame(parameter = "globular radius (nm)",
+  r.glob <- data.frame(parameter = "est. globular radius (nm)",
                        value = (4.75*(combo[1,2])^0.29)/10)
 
 

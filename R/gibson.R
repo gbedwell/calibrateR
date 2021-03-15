@@ -25,7 +25,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
                  "--------------------------------------------------------",
                  ""))
 
-    dat <- data.frame(sample = insert.list,
+    dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
     dat <- dat %>%
@@ -36,12 +36,12 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
                     vol.insert = mass.insert/insert.conc,
                     vol.water = final.vol - (vol.vec+vol.insert),
                     vol.mix = final.vol) %>%
-      dplyr::select(sample, vector, vol.vec, vol.insert, vol.water, vol.mix)
+      dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix)
 
     return(dat) }
 
   else{
-    dat <- data.frame(sample = insert.list,
+    dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
     dat <- dat %>%
@@ -52,6 +52,6 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
                     vol.insert = mass.insert/insert.conc,
                     vol.water = final.vol - (vol.vec+vol.insert),
                     vol.mix = final.vol) %>%
-      dplyr::select(sample, vector, vol.vec, vol.insert, vol.water, vol.mix)
+      dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix)
 
     return(dat) } }
