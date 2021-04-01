@@ -23,14 +23,18 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
 
     writeLines(c("-----------------------------------------------------------",
                  "Assuming the desired vector mass is 50 ng",
-                 "Assuming each insert-vector pairing is a unique reaction!",
                  "-----------------------------------------------------------",
                  ""))
 
     dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
-    if(single.reaction == "no"){
+    if(single.reaction == "yes"){
+
+      writeLines(c("------------------------------------------------------------",
+                   "Assuming each insert-vector pairing is a unique reaction!",
+                   "------------------------------------------------------------",
+                   ""))
 
       dat <- dat %>%
         dplyr::mutate(pmol.vec = (50*1000)/(vec.len*650),
@@ -64,7 +68,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
 
   else{
 
-    if(single.reaction == "no"){
+    if(single.reaction == "yes"){
 
       writeLines(c("------------------------------------------------------------",
                    "Assuming each insert-vector pairing is a unique reaction!",
