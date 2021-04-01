@@ -29,81 +29,81 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
     dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
-    if(single.reaction == "yes"){
+      if(single.reaction == "yes"){
 
-      writeLines(c("------------------------------------------------------------",
-                   "Assuming each insert-vector pairing is a unique reaction!",
-                   "------------------------------------------------------------",
-                   ""))
+        writeLines(c("------------------------------------------------------------",
+                     "Assuming each insert-vector pairing is a unique reaction!",
+                     "------------------------------------------------------------",
+                     ""))
 
-      dat <- dat %>%
-        dplyr::mutate(pmol.vec = (50*1000)/(vec.len*650),
-                      vol.vec = 50/vec.conc,
-                      pmol.insert = pmol.vec*molar.ratio,
-                      mass.insert = (pmol.insert*(insert.len*650))/1000,
-                      vol.insert = mass.insert/insert.conc,
-                      vol.water = final.vol - (vol.vec+vol.insert),
-                      vol.mix = final.vol) %>%
-        dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) }
-
-
-
-    if(single.reaction == "no"){
-
-      writeLines(c("--------------------------------------------------------------",
-                   "Assuming that all inserts are going in a single reaction!",
-                   "Assuming that there is ONLY ONE LINEARIZED VECTOR BEING USED!",
-                   "---------------------------------------------------------------",
-                   ""))
-
-      dat <- dat %>%
-        dplyr::mutate(pmol.vec = (50*1000)/(vec.len*650),
-                      vol.vec = 50/vec.conc,
-                      pmol.insert = pmol.vec*molar.ratio,
-                      mass.insert = (pmol.insert*(insert.len*650))/1000,
-                      vol.insert = mass.insert/insert.conc,
-                      vol.water = final.vol - (vol.vec+sum(vol.insert)),
-                      vol.mix = final.vol) %>%
-        dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) } }
-
-  else{
-
-    if(single.reaction == "yes"){
-
-      writeLines(c("------------------------------------------------------------",
-                   "Assuming each insert-vector pairing is a unique reaction!",
-                   "------------------------------------------------------------",
-                   ""))
-
-      dat <- dat %>%
-        dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
-                      vol.vec = vec.mass/vec.conc,
-                      pmol.insert = pmol.vec*molar.ratio,
-                      mass.insert = (pmol.insert*(insert.len*650))/1000,
-                      vol.insert = mass.insert/insert.conc,
-                      vol.water = final.vol - (vol.vec+vol.insert),
-                      vol.mix = final.vol) %>%
-        dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) }
+        dat <- dat %>%
+          dplyr::mutate(pmol.vec = (50*1000)/(vec.len*650),
+                        vol.vec = 50/vec.conc,
+                        pmol.insert = pmol.vec*molar.ratio,
+                        mass.insert = (pmol.insert*(insert.len*650))/1000,
+                        vol.insert = mass.insert/insert.conc,
+                        vol.water = final.vol - (vol.vec+vol.insert),
+                        vol.mix = final.vol) %>%
+          dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) }
 
 
 
-    if(single.reaction == "no"){
+      if(single.reaction == "no"){
 
-      writeLines(c("--------------------------------------------------------------",
-                   "Assuming that all inserts are going in a single reaction!",
-                   "Assuming that there is ONLY ONE LINEARIZED VECTOR BEING USED!",
-                   "---------------------------------------------------------------",
-                   ""))
+        writeLines(c("--------------------------------------------------------------",
+                     "Assuming that all inserts are going in a single reaction!",
+                     "Assuming that there is ONLY ONE LINEARIZED VECTOR BEING USED!",
+                     "---------------------------------------------------------------",
+                     ""))
 
-      dat <- dat %>%
-        dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
-                      vol.vec = vec.mass/vec.conc,
-                      pmol.insert = pmol.vec*molar.ratio,
-                      mass.insert = (pmol.insert*(insert.len*650))/1000,
-                      vol.insert = mass.insert/insert.conc,
-                      vol.water = final.vol - (vol.vec+sum(vol.insert)),
-                      vol.mix = final.vol) %>%
-        dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) } }
+        dat <- dat %>%
+          dplyr::mutate(pmol.vec = (50*1000)/(vec.len*650),
+                        vol.vec = 50/vec.conc,
+                        pmol.insert = pmol.vec*molar.ratio,
+                        mass.insert = (pmol.insert*(insert.len*650))/1000,
+                        vol.insert = mass.insert/insert.conc,
+                        vol.water = final.vol - (vol.vec+sum(vol.insert)),
+                        vol.mix = final.vol) %>%
+          dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) } }
+
+    else{
+
+      if(single.reaction == "yes"){
+
+        writeLines(c("------------------------------------------------------------",
+                     "Assuming each insert-vector pairing is a unique reaction!",
+                     "------------------------------------------------------------",
+                     ""))
+
+        dat <- dat %>%
+          dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
+                        vol.vec = vec.mass/vec.conc,
+                        pmol.insert = pmol.vec*molar.ratio,
+                        mass.insert = (pmol.insert*(insert.len*650))/1000,
+                        vol.insert = mass.insert/insert.conc,
+                        vol.water = final.vol - (vol.vec+vol.insert),
+                        vol.mix = final.vol) %>%
+          dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) }
+
+
+
+      if(single.reaction == "no"){
+
+        writeLines(c("--------------------------------------------------------------",
+                     "Assuming that all inserts are going in a single reaction!",
+                     "Assuming that there is ONLY ONE LINEARIZED VECTOR BEING USED!",
+                     "---------------------------------------------------------------",
+                     ""))
+
+        dat <- dat %>%
+          dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
+                        vol.vec = vec.mass/vec.conc,
+                        pmol.insert = pmol.vec*molar.ratio,
+                        mass.insert = (pmol.insert*(insert.len*650))/1000,
+                        vol.insert = mass.insert/insert.conc,
+                        vol.water = final.vol - (vol.vec+sum(vol.insert)),
+                        vol.mix = final.vol) %>%
+          dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) } }
 
 
     return(dat) }
