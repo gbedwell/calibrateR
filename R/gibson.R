@@ -68,6 +68,9 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
 
   else{
 
+    dat <- data.frame(insert = insert.list,
+                      vector = vector.list)
+
       if(single.reaction == "yes"){
 
         writeLines(c("------------------------------------------------------------",
