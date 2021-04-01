@@ -13,7 +13,8 @@ gibson(
   vec.len,
   molar.ratio,
   final.vol,
-  vec.mass = NULL
+  vec.mass = NULL,
+  single.reaction = c("yes", "no")
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ gibson(
 \item{final.vol}{The final volume of the reaction BEFORE addition of 2x reaction buffer.}
 
 \item{vec.mass}{The target mass of vector. If none given, assumed to be 50 ng.}
+
+\item{single.reaction}{\code{"yes"} or \code{"no"}. Tells the function whether or not to treat all entries as a single reaction or multiple reactions.}
 }
 \description{
 Calculates the volumes of vector and insert of a given series of Gibson assembly reactions
