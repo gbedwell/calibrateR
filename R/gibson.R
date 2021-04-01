@@ -66,7 +66,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
                         vol.mix = final.vol) %>%
           dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) } }
 
-    else{
+  else{
 
       if(single.reaction == "yes"){
 
