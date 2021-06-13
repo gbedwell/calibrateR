@@ -56,7 +56,7 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
 
       writeLines(c("This function assumes the extinction coefficient is reported in MOLAR units!",
                    "",
-                   "Molecular weight is not supplied. Only molar concentration will be reported!"))
+                   "Molecular weight is not supplied. Only micromolar concentration will be reported!"))
 
       dat <- data.frame(A280 = A280,
                         A260 = A260,
@@ -78,7 +78,7 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
 
       writeLines(c("This function assumes the extinction coefficient is reported in MOLAR units!",
                    "",
-                   "Concentration will be reported in both molar and mass (mg/mL) units!"))
+                   "Concentration will be reported in both micromolar and mass (mg/mL) units!"))
 
       dat <- data.frame(A280 = A280,
                         A260 = A260,

@@ -115,9 +115,7 @@ bca <- function(prot.conc, blank.abs, std.abs, abs = NULL, dil.fac = NULL, plot 
                    "",
                    "These represent the final values that should usually be used in downstream calculations!",
                    "",
-                   "For multiple dilutions of the same sample, the mean of these values should be calculated.",
-                   "",
-                   "Corrected concentrations are still reported in mg/mL units."))
+                   "For multiple dilutions of the same sample, the mean of these values should be calculated."))
 
       dat.std <- bca.df %>% dplyr::select(corr.abs)
 
@@ -156,7 +154,7 @@ bca <- function(prot.conc, blank.abs, std.abs, abs = NULL, dil.fac = NULL, plot 
         geom_line(aes(x=corr.abs, y=std.upr), color = "black", size=0.2, linetype = "dashed") +
         geom_point(data=bca.pred, aes(x=corr.abs, y=conc.pred), shape=21, size=3, fill = "darkgreen", color="black") +
         geom_label_repel(data=bca.pred,
-                        aes(x=corr.abs, y=conc.pred, label=round(conc.pred.corr,2)),
+                        aes(x=corr.abs, y=conc.pred, label=paste(round(conc.pred.corr,2), "mg/mL")),
                         point.padding = 0.1,
                         nudge_y = 0.125,
                         color = "black") +

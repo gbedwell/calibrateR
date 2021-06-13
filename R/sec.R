@@ -32,7 +32,7 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
     col.vol = cv
 
     biorad.df <- data.frame(
-    mw.da = c(669000,158000,44000,17000,1350)) %>%
+      mw.da = c(669000,158000,44000,17000,1350)) %>%
       dplyr::mutate(rh.nm = (10^((-0.254+(0.369*log10(mw.da)))))/10)
 
     biorad.df <- cbind(biorad.df, stds)  %>%
@@ -62,7 +62,7 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
     col.vol = cv
 
     biorad.df <- data.frame(
-    mw.da = std.masses) %>%
+      mw.da = std.masses) %>%
       dplyr::mutate(rh.nm = (10^((-0.254+(0.369*log10(mw.da)))))/10)
 
     biorad.df <- cbind(biorad.df, stds)  %>%
@@ -112,9 +112,9 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
       dplyr::mutate(parameter = case_when(
         sample == "mw.da"~"mw",
         sample == "rh.nm"~"rh")) %>%
-     dplyr::select(-c(sample)) %>%
-     dplyr::arrange(parameter) %>%
-     dplyr::select(parameter, K.av, calc.value)
+      dplyr::select(-c(sample)) %>%
+      dplyr::arrange(parameter) %>%
+      dplyr::select(parameter, K.av, calc.value)
 
     dat.mw <- biorad.df %>%
       dplyr::filter(parameter == "mw") %>%
@@ -137,9 +137,9 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
                     parameter = "rh") %>%
       dplyr::select(pred.value, lwr, upr)
 
-   pred.combine <- rbind(mw.pred, rh.pred)
+    pred.combine <- rbind(mw.pred, rh.pred)
 
-   biorad.df <- cbind(biorad.df, pred.combine)
+    biorad.df <- cbind(biorad.df, pred.combine)
 
     plot <- ggplot(biorad.df, aes(x=K.av, y=log(calc.value), fill=parameter)) +
       geom_point(shape=21, size=3, color="black") +
@@ -151,17 +151,17 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
                         guide = guide_legend(title.position = "top",
                                              nrow = 1,
                                              title.hjust=0.5)) +
-     scale_color_manual(values = c("darkblue","darkred")) +
+      scale_color_manual(values = c("darkblue","darkred")) +
       guides(color = FALSE) +
       theme_bw() +
       theme(axis.text=element_text(size=14),
-           axis.title=element_text(size=16),
-           legend.position = "top",
-           legend.text = element_text(size=12),
-           legend.title=element_blank(),
-           legend.justification="center") +
+            axis.title=element_text(size=16),
+            legend.position = "top",
+            legend.text = element_text(size=12),
+            legend.title=element_blank(),
+            legend.justification="center") +
       scale_y_continuous(name = expression(log(M[W]~(Da))), limits=c(-1, 15),
-                        sec.axis = sec_axis(trans=~., name=expression(log(R[H]~(nm))))) +
+                         sec.axis = sec_axis(trans=~., name=expression(log(R[H]~(nm))))) +
       scale_x_continuous(limits=c(0,1),
                          breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
       xlab(expression(K[av]))
@@ -182,7 +182,7 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
       pred.ev = data.frame(pred.ev = unk)
 
       biorad.pred <- pred.ev %>%
-       dplyr::mutate(ve.v0 = pred.ev - void.vol,
+        dplyr::mutate(ve.v0 = pred.ev - void.vol,
                       K.av = ve.v0/(max(col.vol)-void.vol))
 
       dat <- biorad.pred %>% dplyr::select(K.av)
@@ -209,12 +209,9 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
 
     if(plot == "yes"){
 
-      writeLines(c("Molecular weight and radius LABELS appearing on the plot on NOT log-transformed!",
+      writeLines(c("Molecular weight and radius LABELS appearing on the plot are NOT log-transformed!",
                    "",
-                   "NOTE THAT THE ACTUAL POINTS ARE STILL AT LOG-TRANSFORMED POSITIONS!",
-                   "",
-                   "Molecular weight LABELS are reported in kDa units.",
-                   "Hydrodynamic radius LABELS are reported in nm units."))
+                   "NOTE THAT THE ACTUAL POINTS ARE STILL AT LOG-TRANSFORMED POSITIONS!"))
 
       biorad.df <- biorad.df %>%
         tidyr::pivot_longer(cols = c(mw.da, rh.nm), names_to = "sample") %>%
@@ -256,7 +253,7 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
       pred.ev = data.frame(pred.ev = unk)
 
       biorad.pred <- pred.ev %>%
-       dplyr::mutate(ve.v0 = pred.ev - void.vol,
+        dplyr::mutate(ve.v0 = pred.ev - void.vol,
                       K.av = ve.v0/(max(col.vol)-void.vol))
 
       dat <- biorad.pred %>% dplyr::select(K.av)
@@ -277,44 +274,44 @@ sec <- function(void, cv, stds, masses = NULL, unk = NULL, plot = c("yes", "no")
       biorad.pred <- cbind(biorad.pred, mw.pred, rh.pred)
 
 
-    plot <- ggplot(biorad.df, aes(x=K.av, y=log(calc.value), fill=parameter)) +
-      geom_point(shape=21, size=3, color="black") +
-      geom_line(aes(x=K.av, y=log(pred.value), color=parameter), size=0.8) +
-      geom_line(aes(x=K.av, y=log(lwr)), color = "black", size=0.2, linetype = "dashed") +
-      geom_line(aes(x=K.av, y=log(upr)), color = "black", size=0.2, linetype = "dashed") +
-      geom_point(data=biorad.pred, aes(x=K.av, y=log(mw.pred)), shape=21, size=3, color="black") +
-      geom_point(data=biorad.pred, aes(x=K.av, y=log(rh.pred)), shape=21, size=3, color="black") +
-      geom_label_repel(data=biorad.pred,
-                        aes(x=K.av, y=log(mw.pred), label=round(mw.pred/1000,2)),
-                        point.padding = 0.2,
-                        nudge_y = 0.125,
-                        color = "black",
-                       fill="white") +
-      geom_label_repel(data=biorad.pred,
-                        aes(x=K.av, y=log(rh.pred), label=round(rh.pred,2)),
-                        point.padding = 0.2,
-                        nudge_y = 0.125,
-                        color = "black",
-                       fill="white") +
-      scale_fill_manual(values = c("darkblue","darkred","darkgreen"),
-                        labels = c(expression(M[W]~(Da)), expression(R[H]~(nm)), expression(Unknown)),
-                        guide = guide_legend(title.position = "top",
-                                             nrow = 1,
-                                             title.hjust=0.5)) +
-      scale_color_manual(values = c("darkblue","darkred","darkgreen")) +
-      guides(color = FALSE) +
-      theme_bw() +
-      theme(axis.text=element_text(size=14),
-           axis.title=element_text(size=16),
-           legend.position = "top",
-           legend.text = element_text(size=12),
-           legend.title=element_blank(),
-           legend.justification="center") +
-      scale_y_continuous(name = expression(log(M[W]~(Da))), limits=c(-1, 15),
-                        sec.axis = sec_axis(trans=~., name=expression(log(R[H]~(nm))))) +
-      scale_x_continuous(limits=c(0,1),
-                         breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
-      xlab(expression(K[av]))
+      plot <- ggplot(biorad.df, aes(x=K.av, y=log(calc.value), fill=parameter)) +
+        geom_point(shape=21, size=3, color="black") +
+        geom_line(aes(x=K.av, y=log(pred.value), color=parameter), size=0.8) +
+        geom_line(aes(x=K.av, y=log(lwr)), color = "black", size=0.2, linetype = "dashed") +
+        geom_line(aes(x=K.av, y=log(upr)), color = "black", size=0.2, linetype = "dashed") +
+        geom_point(data=biorad.pred, aes(x=K.av, y=log(mw.pred)), shape=21, size=3, color="black") +
+        geom_point(data=biorad.pred, aes(x=K.av, y=log(rh.pred)), shape=21, size=3, color="black") +
+        geom_label_repel(data=biorad.pred,
+                         aes(x=K.av, y=log(mw.pred), label=paste(round(mw.pred/1000,2), "kDa")),
+                         point.padding = 0.2,
+                         nudge_y = 0.125,
+                         color = "black",
+                         fill="white") +
+        geom_label_repel(data=biorad.pred,
+                         aes(x=K.av, y=log(rh.pred), label=paste(round(rh.pred,2), "nm")),
+                         point.padding = 0.2,
+                         nudge_y = 0.125,
+                         color = "black",
+                         fill="white") +
+        scale_fill_manual(values = c("darkblue","darkred","darkgreen"),
+                          labels = c(expression(M[W]~(Da)), expression(R[H]~(nm)), expression(Unknown)),
+                          guide = guide_legend(title.position = "top",
+                                               nrow = 1,
+                                               title.hjust=0.5)) +
+        scale_color_manual(values = c("darkblue","darkred","darkgreen")) +
+        guides(color = FALSE) +
+        theme_bw() +
+        theme(axis.text=element_text(size=14),
+              axis.title=element_text(size=16),
+              legend.position = "top",
+              legend.text = element_text(size=12),
+              legend.title=element_blank(),
+              legend.justification="center") +
+        scale_y_continuous(name = expression(log(M[W]~(Da))), limits=c(-1, 15),
+                           sec.axis = sec_axis(trans=~., name=expression(log(R[H]~(nm))))) +
+        scale_x_continuous(limits=c(0,1),
+                           breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+        xlab(expression(K[av]))
 
 
-    return(plot) } } }
+      return(plot) } } }

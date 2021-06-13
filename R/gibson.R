@@ -29,7 +29,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
     dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
-      if(single.reaction == "yes"){
+      if(single.reaction == "no"){
 
         writeLines(c("------------------------------------------------------------",
                      "Assuming each insert-vector pairing is a unique reaction!",
@@ -48,7 +48,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
 
 
 
-      if(single.reaction == "no"){
+      if(single.reaction == "yes"){
 
         writeLines(c("--------------------------------------------------------------",
                      "Assuming that all inserts are going in a single reaction!",
@@ -71,7 +71,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
     dat <- data.frame(insert = insert.list,
                       vector = vector.list)
 
-      if(single.reaction == "yes"){
+      if(single.reaction == "no"){
 
         writeLines(c("------------------------------------------------------------",
                      "Assuming each insert-vector pairing is a unique reaction!",
@@ -90,7 +90,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
 
 
 
-      if(single.reaction == "no"){
+      if(single.reaction == "yes"){
 
         writeLines(c("--------------------------------------------------------------",
                      "Assuming that all inserts are going in a single reaction!",
