@@ -2,6 +2,6 @@
 
 export(bca)
 export(gibson)
-export(prot.param)
+export(prot_param)
 export(sec)
-export(uv.vis)
+export(uv_vis)

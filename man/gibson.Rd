@@ -13,8 +13,8 @@ gibson(
   vec.len,
   molar.ratio,
   final.vol,
-  vec.mass = NULL,
-  single.reaction = c("yes", "no")
+  vec.mass = 50,
+  combine.fragments = c("yes", "no")
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ gibson(
 
 \item{vec.mass}{The target mass of vector. If none given, assumed to be 50 ng.}
 
-\item{single.reaction}{\code{"yes"} or \code{"no"}. Tells the function whether or not to treat all entries as a single reaction or multiple reactions.}
+\item{combine.fragments}{\code{"yes"} or \code{"no"}. Tells the function whether or not to consider all fragments as going into a single reaction.}
 }
 \description{
 Calculates the volumes of vector and insert of a given series of Gibson assembly reactions

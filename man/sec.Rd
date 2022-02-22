@@ -2,17 +2,9 @@
 % Please edit documentation in R/sec.R
 \name{sec}
 \alias{sec}
-\title{Gel filtration (or size-exclusion) column calibration and analyte analysis}
+\title{Gel filtration column calibration and analyte analysis}
 \usage{
-sec(
-  void,
-  cv,
-  stds,
-  masses = NULL,
-  unk = NULL,
-  plot = c("yes", "no"),
-  type = c("cal", "pred")
-)
+sec(void, cv, stds, masses, unk, sample.ids)
 }
 \arguments{
 \item{void}{The void volume of the column, measured with something like blue dextran.}
@@ -21,18 +13,14 @@ sec(
 
 \item{stds}{The elution volumes of the standards, entered within \code{c()}.}
 
-\item{masses}{The known masses of each of the standards. If left \code{NULL}, Bio Rad standard masses will be assumed.}
+\item{masses}{The known masses of each of the standards.}
 
 \item{unk}{The elution volume of any unknown analyte whose hydrodynamic parameters are of interest. Required for any \code{type="pred"} usage.}
-
-\item{plot}{Defines whether or not the output should be presented graphically or not \code{"yes"} or \code{"no"}.}
-
-\item{type}{Defines whether the output is column calibration or analyte analysis}
 }
 \description{
-Gel filtration (or size-exclusion) column calibration and analyte analysis
+Gel filtration column calibration and analyte analysis
 }
 \examples{
-sec(masses = c(), void, cv, stds = c(), unk = NULL, plot = "no", type = "cal")
+sec(masses, void, cv, stds, unk)
 
 }

@@ -4,15 +4,7 @@
 \alias{bca}
 \title{Generates a standard curve for BCA analysis and calculates the concentrations of unknown samples}
 \usage{
-bca(
-  prot.conc,
-  blank.abs,
-  std.abs,
-  abs = NULL,
-  dil.fac = NULL,
-  plot = c("yes", "no"),
-  type = c("cal", "pred")
-)
+bca(prot.conc, blank.abs, std.abs, abs, sample.ids, dil.fac)
 }
 \arguments{
 \item{prot.conc}{The concentrations of the protein standards used in the assay.}
@@ -24,15 +16,11 @@ bca(
 \item{abs}{Absorbance values of the unknown analyte(s).}
 
 \item{dil.fac}{The dilution factors corresponding to each entered analyte aborbance value.}
-
-\item{plot}{Defines whether or not the output should be presented graphically or not \code{"yes"} or \code{"no"}.}
-
-\item{type}{Defines whether the output is column calibration or analyte analysis}
 }
 \description{
 Generates a standard curve for BCA analysis and calculates the concentrations of unknown samples
 }
 \examples{
-bca(prot.conc = c(), blank.abs, std.abs = c(), abs = NULL, plot, type)
+bca(prot.conc = c(), blank.abs, std.abs = c(), abs = NULL)
 
 }
