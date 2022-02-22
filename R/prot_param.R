@@ -3,28 +3,40 @@
 #'
 #'
 #'@param aa.sequence The amino acid sequence of the protein of interest in single letter code. Enter as \code{c()}.
-#'@param temp The temperature of the analysis. Relevant to calculation of various hydrodynamic parameters like vbar.
+#'@param temp The temperature of the analysis.
+#'@param wavelength The wavelength being used by the refractometer.
 #'
-#'
-#' @examples prot.param()
+#' @examples prot_param()
 #'
 #' @export
-prot.param <- function(aa.sequence, temp){
+prot_param <- function(aa.sequence, temp = NULL, wavelength = NULL){
 
-  aa.str <- c("A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V")
+  if (is.null(temp)) {
+    temp = 25 }
+  else { temp = temp }
+
+  if (is.null(wavelength)) {
+    wavelength = 589 }
+  else { wavelength = wavelength }
+
+  aa.sequence = stringr::str_to_upper(aa.sequence, locale = "en")
+
+  aa.str <- c("A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V")
 
   aa.dat <- data.frame(amino.acid = c("A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"),
-                       mono.mass = c(71.03711381,156.1011111,114.0429275,115.0269431,103.0091845,129.0425931,128.0585775,
-                                     57.02146374,137.0589119,113.084064,113.084064,128.0949631,131.0404846,147.0684139,
-                                     97.05276388,87.03202844,101.0476785,186.079313,163.0633286,99.06841395),
-                       avg.mass = c(71.0779,156.18568,114.10264,115.0874,103.1429,129.11398,128.12922,57.05132,
-                                    137.13928,113.15764,113.15764,128.17228,131.19606,147.17386,97.11518,
-                                    87.0773,101.10388,186.2099,163.17326,99.13106),
-                       vbar = c(0.74,0.70,0.62,0.60,0.63,0.67,0.66,0.64,0.67,0.90,
+                       mono.mass = c(71.03711,156.10111,114.04293,115.02694,103.00919,129.04259,128.05858,
+                                     57.02146,137.05891,113.08406,113.08406,128.09496,131.04049,147.06841,
+                                     97.05276,87.03203,101.04768,186.07931,163.06333,99.06841),
+                       avg.mass = c(71.0788,156.1875,114.1038,115.0886,103.1388,129.1155,128.1307,57.0519,
+                                    137.1411,113.1594,113.1594,128.1741,131.1926,147.1766,97.1167,
+                                    87.0782,101.1051,186.2132,163.1760,99.1326),
+                       vbar = c(0.74,0.70,0.62,0.60,0.63,0.66,0.67,0.64,0.67,0.90,
                                 0.90,0.82,0.75,0.77,0.76,0.63,0.70,0.74,0.71,0.86),
-                       ext.h2o = c(0,0,0,0,125,0,0,0,0,0,0,0,0,0,0,0,0,5500,1490,0),
+                       ext.h2o = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5500,1490,0),
                        ext.guhcl = c(0,0,0,0,120,0,0,0,0,0,0,0,0,0,0,0,0,5690,1280,0),
-                       ext.205 = c(0,1350,400,0,690,0,400,0,5200,0,0,0,0,8600,0,0,0,20400,6080,0))
+                       ext.205 = c(0,1350,400,0,690,0,400,0,5200,0,0,0,1830,8600,0,0,0,20400,6080,0),
+                       dndc = c(0.167,0.206,0.192,0.197,0.206,0.183,0.186,0.175,0.219,0.179,
+                                0.173,0.181,0.204,0.244,0.165,0.170,0.172,0.277,0.240,0.172))
 
   aa.count <- data.frame(amino.acid = aa.str,
                          aa.count = stringr::str_count(aa.sequence, aa.str))
@@ -42,8 +54,7 @@ prot.param <- function(aa.sequence, temp){
 
   mono.mass <- aa.dat %>%
     dplyr::summarise(value = sum(aa.count*mono.mass),
-                     value = value+18,
-    ) %>%
+                     value = value+18) %>%
     dplyr::mutate(parameter = "monoisotopic mass (Da)")
 
   vbar.25 <- aa.dat %>%
@@ -61,7 +72,7 @@ prot.param <- function(aa.sequence, temp){
 
   ext.coeff <- aa.dat %>%
     dplyr::summarise(value = sum(aa.count*ext.h2o)) %>%
-    dplyr::mutate(parameter = "folded molar ext. coeff. at 280 nm (OD/mol*cm) in H2O")
+    dplyr::mutate(parameter = "reduced molar ext. coeff. at 280 nm (OD/mol*cm) in H2O")
 
   ext.coeff.guhcl <- aa.dat %>%
     dplyr::summarise(value = sum(aa.count*ext.guhcl)) %>%
@@ -71,27 +82,29 @@ prot.param <- function(aa.sequence, temp){
     dplyr::summarise(value = sum(aa.count*ext.205) + 2780*(sum(aa.count)-1)) %>%
     dplyr::mutate(parameter = "molar ext. coeff. at 205 nm (OD/mol*cm) in water")
 
-  combo <- rbind(residues, avg.mass, mono.mass, vbar.25, vbar.temp, ext.coeff, ext.205) %>%
+  dndc <- aa.dat %>%
+    dplyr::summarise(value.589 = (sum(aa.count*(avg.mass)*dndc))/(sum(aa.count*(avg.mass)))) %>%
+    dplyr::mutate(parameter = "dn/dc (mL/g)",
+                  value.578 = value.589/(0.940+(20000/(589^2))),
+                  value = value.578*(0.940+(20000/(wavelength^2)))*(1 + (25-temp)*0.0025/30)) %>%
+    dplyr::select(parameter, value)
+
+  combo <- rbind(residues, avg.mass, mono.mass, vbar.25, vbar.temp, ext.coeff, ext.205, dndc) %>%
     dplyr::select(parameter, value)
 
   r.sphere <- data.frame(parameter = "radius of sphere with equal mass and density (nm)",
                          value = (((3*(combo[2,2])*(combo[5,2]))/(4*pi*6.022E+23))^(1/3))*10^7)
 
-
   r.denat <- data.frame(parameter = "est. denatured radius (nm)",
                         value = (2.21*(combo[1,2])^0.57)/10)
-
 
   r.glob <- data.frame(parameter = "est. globular radius (nm)",
                        value = (4.75*(combo[1,2])^0.29)/10)
 
-
-  combo <- rbind(residues, avg.mass, mono.mass, vbar.temp,
-                 ext.coeff, ext.coeff.guhcl, ext.205, r.sphere, r.denat, r.glob) %>%
+  combo <- rbind(residues, avg.mass, mono.mass, vbar.temp, ext.coeff,
+                 ext.coeff.guhcl, ext.205, dndc, r.sphere, r.denat, r.glob) %>%
     dplyr::select(parameter, value) %>%
     dplyr::mutate_if(is.numeric, round, 3)
-
-
 
   return(combo)
 

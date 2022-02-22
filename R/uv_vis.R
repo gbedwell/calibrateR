@@ -11,53 +11,22 @@
 #'@param mol.weight The molecular weight of a given protein. Necessary to return concentration in mg/mL.
 #'
 #'
-#' @examples uv.vis()
+#' @examples uv_vis()
 #'
 #' @export
-uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
-                   A260, A280, dil.fac, path.length = NULL, extinction.coeff = NULL, mol.weight = NULL){
-
-  if(is.null(path.length)){
-
-    path = 1
-
-    writeLines(c("----------------------------------------------------------------------------------------------",
-                 "Assuming path length is 1 cm!",
-                 "",
-                 "If your path length differs from 1 cm, enter the correct value as 'path.length' in CENTIMETERS",
-                 "-----------------------------------------------------------------------------------------------",
-                 "")) }
-
-  if(!is.null(path.length)){
-
+uv_vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
+                   A260, A280, dil.fac, path.length = NULL,
+                   extinction.coeff = NULL, mol.weight = NULL){
+  if(is.null(path.length)) {
+    path = 1 }
+  else {
     path = path.length }
 
-
-
-
   if(type == "protein"){
-
-    writeLines(c("--------------------------------------------------------",
-                 "Please enter extinction coefficient values in MOLAR units!",
-                 "",
-                 "Please enter protein molecular weight in GRAMS/MOLE!",
-                 "--------------------------------------------------------",
-                 ""))
-
     if(is.null(extinction.coeff)) {
+      stop(c("Must define protein extinction coefficient in molar units.")) }
 
-      writeLines(c("Must define protein extinction coefficient in MOLAR units!",
-                   "",
-                   "Use the function prot.param() in this package for estimation at 280 and 205 nm.",
-                   "",
-                   "The web tool https://web.expasy.org/protparam/ also provides this value at 280 nm.")) }
-
-    if(is.null(mol.weight)){
-
-      writeLines(c("This function assumes the extinction coefficient is reported in MOLAR units!",
-                   "",
-                   "Molecular weight is not supplied. Only micromolar concentration will be reported!"))
-
+    if(is.null(mol.weight)) {
       dat <- data.frame(A280 = A280,
                         A260 = A260,
                         A280.A260.ratio = A280/A260,
@@ -67,19 +36,14 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
                         ext.coeff = extinction.coeff)
 
       dat <- dat %>%
-        dplyr::mutate(molar.conc = (corr.A280/(extinction.coeff*path.len))*1000000) %>%
-        dplyr::select(corr.A280, molar.conc, A280.A260.ratio) %>%
+        dplyr::mutate(micromolar.conc = (corr.A280/(extinction.coeff*path.len))*1000000) %>%
+        dplyr::select(corr.A280, micromolar.conc, A280.A260.ratio) %>%
+        magrittr::set_colnames(c("corrected A280","concentration (µM)","280/260")) %>%
         tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value")
 
-
-      return(dat) }
-
-    if(!is.null(mol.weight)){
-
-      writeLines(c("This function assumes the extinction coefficient is reported in MOLAR units!",
-                   "",
-                   "Concentration will be reported in both micromolar and mass (mg/mL) units!"))
-
+      return(dat)
+    }
+    else {
       dat <- data.frame(A280 = A280,
                         A260 = A260,
                         A280.A260.ratio = A280/A260,
@@ -90,18 +54,17 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
 
 
       dat <- dat %>%
-        dplyr::mutate(molar.conc = (corr.A280/(extinction.coeff*path.len))*1000000,
-                      mass.conc = (molar.conc/1000000)*mol.weight) %>%
-        dplyr::select(corr.A280, molar.conc, mass.conc, A280.A260.ratio) %>%
+        dplyr::mutate(micromolar.conc = (corr.A280/(extinction.coeff*path.len))*1000000,
+                      mass.conc = (micromolar.conc/1000000)*mol.weight) %>%
+        dplyr::select(corr.A280, micromolar.conc, mass.conc, A280.A260.ratio) %>%
+        magrittr::set_colnames(c("corrected A280","concentration (µM)","concentration (mg/mL)","280/260")) %>%
         tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value")
 
-      return(dat) } }
-
+      return(dat)
+    }
+  }
 
   if(type == "dsDNA"){
-
-    writeLines(c("Calculating concentration of dsDNA!"))
-
     dat <- data.frame(A280 = A280,
                       A260 = A260,
                       A260.A280.ratio = A260/A280,
@@ -112,15 +75,13 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
     dat <- dat %>%
       dplyr::mutate(ug.mL = corr.A260*df*path.len*50) %>%
       dplyr::select(corr.A260, ug.mL, A260.A280.ratio) %>%
+      magrittr::set_colnames(c("corrected A260","concentration (µg/mL)","260/280")) %>%
       tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value")
 
-
-    return(dat) }
+    return(dat)
+  }
 
   if(type == "ssDNA"){
-
-    writeLines(c("Calculating concentration of ssDNA!"))
-
     dat <- data.frame(A280 = A280,
                       A260 = A260,
                       A260.A280.ratio = A260/A280,
@@ -131,15 +92,13 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
     dat <- dat %>%
       dplyr::mutate(ug.mL = corr.A260*df*path.len*33) %>%
       dplyr::select(corr.A260, ug.mL, A260.A280.ratio) %>%
+      magrittr::set_colnames(c("corrected A260","concentration (µg/mL)","260/280")) %>%
       tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value")
 
-
-    return(dat) }
+    return(dat)
+  }
 
   if(type == "ssRNA"){
-
-    writeLines(c("Calculating concentration of ssRNA!"))
-
     dat <- data.frame(A280 = A280,
                       A260 = A260,
                       A260.A280.ratio = A260/A280,
@@ -150,7 +109,8 @@ uv.vis <- function(type = c("protein","dsDNA","ssDNA","ssRNA"),
     dat <- dat %>%
       dplyr::mutate(ug.mL = corr.A260*df*path.len*40) %>%
       dplyr::select(corr.A260, ug.mL, A260.A280.ratio) %>%
-      tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value") }
+      magrittr::set_colnames(c("corrected A260","concentration (µg/mL)","260/280")) %>%
+      tidyr::pivot_longer(everything(), names_to = "parameter", values_to = "value")
 
-
-  return(dat) }
+    return(dat) }
+}
