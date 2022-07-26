@@ -6,16 +6,14 @@
 #'@param cv The column volume of the column, measured with something like 0.2% (v/v) acetone.
 #'@param stds The elution volumes of the standards, entered within \code{c()}.
 #'@param masses The known masses of each of the standards.
-#'@param unk The elution volume of any unknown analyte whose hydrodynamic parameters are of interest. Required for any \code{type="pred"} usage.
+#'@param unk The elution volume of any unknown analyte whose hydrodynamic parameters are of interest.
+#'@param sample.ids A unique identifier for each protein standard.
 #'
 #'
 #' @examples sec(masses, void, cv, stds, unk)
 #'
 #' @export
 sec <- function(void, cv, stds, masses, unk, sample.ids) {
-  require(broom)
-  require(dplyr)
-
   std.masses <- masses
   stds <- data.frame(standards.ev = stds) %>%
     dplyr::arrange(standards.ev)
@@ -24,7 +22,7 @@ sec <- function(void, cv, stds, masses, unk, sample.ids) {
 
   stds.df <- data.frame(mw = std.masses) %>%
     dplyr::arrange(desc(mw)) %>%
-    dplyr::mutate(rh = (10^((-0.254+(0.369*log10(mw)))))/10)
+    dplyr::mutate(rh = (10^((-0.204+(0.357*log10(mw)))))/10)
 
   pred.ev <- data.frame(pred.ev = unk,
                         ids = sample.ids) %>%
@@ -52,10 +50,11 @@ sec <- function(void, cv, stds, masses, unk, sample.ids) {
     dplyr::select(param, preds) %>%
     cbind(., pred.ev) %>%
     dplyr::select(ids, param, preds) %>%
-    dplyr::mutate(preds = exp(preds)) %>%
+    dplyr::mutate(preds = round(exp(preds), 2)) %>%
     tidyr::pivot_wider(names_from = param, values_from = preds) %>%
-    dplyr::rename(mw.da = mw,
-                  rh.nm = rh)
+    dplyr::rename(`IDs` = ids,
+                  `MW (Da)` = mw,
+                  `Rh (nm)` = rh)
 
   datlist <- list()
   datlist[[1]] <- pred.df

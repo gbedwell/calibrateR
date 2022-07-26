@@ -14,7 +14,7 @@ gibson(
   molar.ratio,
   final.vol,
   vec.mass = 50,
-  combine.fragments = c("yes", "no")
+  combine.fragments = FALSE
 )
 }
 \arguments{

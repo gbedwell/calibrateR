@@ -44,18 +44,18 @@ prot_param <- function(aa.sequence, temp = NULL, wavelength = NULL){
   aa.dat <- dplyr::inner_join(aa.dat, aa.count, by="amino.acid")
 
   residues <- aa.dat %>%
-    dplyr::summarise(value = sum(aa.count)) %>%
-    dplyr::mutate(parameter = "number of residues")
+    dplyr::summarise(value = round(sum(aa.count))) %>%
+    dplyr::mutate(parameter = "Number of Residues")
 
   avg.mass <- aa.dat %>%
     dplyr::summarise(value = sum(aa.count*avg.mass),
-                     value = value+18) %>%
-    dplyr::mutate(parameter = "isotopically averaged mass (Da)")
+                     value = round(value+18, 2)) %>%
+    dplyr::mutate(parameter = "Isotopically Averaged Mass (Da)")
 
   mono.mass <- aa.dat %>%
     dplyr::summarise(value = sum(aa.count*mono.mass),
-                     value = value+18) %>%
-    dplyr::mutate(parameter = "monoisotopic mass (Da)")
+                     value = round(value+18, 2)) %>%
+    dplyr::mutate(parameter = "Monoisotopic Mass (Da)")
 
   vbar.25 <- aa.dat %>%
     dplyr::mutate(parameter = "vbar at 25C (mL/g)") %>%
@@ -66,46 +66,46 @@ prot_param <- function(aa.sequence, temp = NULL, wavelength = NULL){
   vbar.temp <- aa.dat %>%
     dplyr::mutate(parameter = "vbar at temp (mL/g)") %>%
     dplyr::mutate(vbar.25 = (sum(aa.count*(avg.mass)*vbar))/(sum(aa.count*(avg.mass))),
-                  value = vbar.25 + (0.000425*((temp+273.15)-298.15))) %>%
+                  value = round(vbar.25 + (0.000425*((temp+273.15)-298.15)), 3)) %>%
     dplyr::select(parameter, value) %>%
     dplyr::distinct()
 
   ext.coeff <- aa.dat %>%
-    dplyr::summarise(value = sum(aa.count*ext.h2o)) %>%
-    dplyr::mutate(parameter = "reduced molar ext. coeff. at 280 nm (OD/mol*cm) in H2O")
+    dplyr::summarise(value = round(sum(aa.count*ext.h2o))) %>%
+    dplyr::mutate(parameter = "Reduced Molar Ext. Coeff. at 280 nm (OD/mol*cm) in H2O")
 
   ext.coeff.guhcl <- aa.dat %>%
-    dplyr::summarise(value = sum(aa.count*ext.guhcl)) %>%
-    dplyr::mutate(parameter = "unfolded molar ext. coeff. at 280 nm (OD/mol*cm) in 6 M GuHCl")
+    dplyr::summarise(value = round(sum(aa.count*ext.guhcl))) %>%
+    dplyr::mutate(parameter = "Unfolded Molar Ext. Coeff. at 280 nm (OD/mol*cm) in 6 M GuHCl")
 
   ext.205 <- aa.dat %>%
-    dplyr::summarise(value = sum(aa.count*ext.205) + 2780*(sum(aa.count)-1)) %>%
-    dplyr::mutate(parameter = "molar ext. coeff. at 205 nm (OD/mol*cm) in water")
+    dplyr::summarise(value = round(sum(aa.count*ext.205) + 2780*(sum(aa.count)-1))) %>%
+    dplyr::mutate(parameter = "Molar Ext. Coeff. at 205 nm (OD/mol*cm) in Water")
 
   dndc <- aa.dat %>%
     dplyr::summarise(value.589 = (sum(aa.count*(avg.mass)*dndc))/(sum(aa.count*(avg.mass)))) %>%
     dplyr::mutate(parameter = "dn/dc (mL/g)",
                   value.578 = value.589/(0.940+(20000/(589^2))),
-                  value = value.578*(0.940+(20000/(wavelength^2)))*(1 + (25-temp)*0.0025/30)) %>%
+                  value = round(value.578*(0.940+(20000/(wavelength^2)))*(1 + (25-temp)*0.0025/30), 3)) %>%
     dplyr::select(parameter, value)
 
   combo <- rbind(residues, avg.mass, mono.mass, vbar.25, vbar.temp, ext.coeff, ext.205, dndc) %>%
     dplyr::select(parameter, value)
 
-  r.sphere <- data.frame(parameter = "radius of sphere with equal mass and density (nm)",
-                         value = (((3*(combo[2,2])*(combo[5,2]))/(4*pi*6.022E+23))^(1/3))*10^7)
+  r.sphere <- data.frame(parameter = "Radius of Sphere with Equal Mass and Density (nm)",
+                         value = round((((3*(combo[2,2])*(combo[5,2]))/(4*pi*6.022E+23))^(1/3))*10^7, 2))
 
-  r.denat <- data.frame(parameter = "est. denatured radius (nm)",
-                        value = (2.21*(combo[1,2])^0.57)/10)
+  r.denat <- data.frame(parameter = "Est. Denatured Radius (nm)",
+                        value = round((2.21*(combo[1,2])^0.57)/10, 2))
 
-  r.glob <- data.frame(parameter = "est. globular radius (nm)",
-                       value = (4.75*(combo[1,2])^0.29)/10)
+  r.glob <- data.frame(parameter = "Est. Globular Radius (nm)",
+                       value = round((4.75*(combo[1,2])^0.29)/10, 2))
 
   combo <- rbind(residues, avg.mass, mono.mass, vbar.temp, ext.coeff,
                  ext.coeff.guhcl, ext.205, dndc, r.sphere, r.denat, r.glob) %>%
     dplyr::select(parameter, value) %>%
-    dplyr::mutate_if(is.numeric, round, 3)
+    dplyr::rename(Parameter = parameter,
+                  Value = value)
 
   return(combo)
-
 }

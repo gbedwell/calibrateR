@@ -15,7 +15,9 @@ sec(void, cv, stds, masses, unk, sample.ids)
 
 \item{masses}{The known masses of each of the standards.}
 
-\item{unk}{The elution volume of any unknown analyte whose hydrodynamic parameters are of interest. Required for any \code{type="pred"} usage.}
+\item{unk}{The elution volume of any unknown analyte whose hydrodynamic parameters are of interest.}
+
+\item{sample.ids}{A unique identifier for each protein standard.}
 }
 \description{
 Gel filtration column calibration and analyte analysis

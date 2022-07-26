@@ -13,6 +13,10 @@
 #'
 #' @export
 bca <- function(prot.conc, blank.abs, std.abs, abs, sample.ids, dil.fac) {
+  require(broom, quietly = TRUE)
+  require(purrr, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+
   pred.abs <- data.frame(pred.abs = abs,
                          ids = sample.ids) %>%
     dplyr::mutate(corr.abs = (pred.abs-blank.abs)*dil.fac) %>%
@@ -33,7 +37,10 @@ bca <- function(prot.conc, blank.abs, std.abs, abs, sample.ids, dil.fac) {
   pred.df <- bca.df %>%
     tidyr::unnest(preds) %>%
     cbind(., pred.abs) %>%
-    dplyr::select(ids, preds)
+    dplyr::select(ids, preds) %>%
+    dplyr::mutate(preds = round(preds, 3)) %>%
+    dplyr::rename(`IDs` = ids,
+                  `Concentration (mg/mL)` = preds)
 
   datlist <- list()
   datlist[[1]] <- pred.df
