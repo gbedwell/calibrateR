@@ -35,7 +35,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
       magrittr::set_colnames(c("Insert","Vector","Vector Volume (µL)","Insert Volume (µL)",
                                "Volume Water (µL)","Volume MM (µL)"))
     }
-  if(isTRUE(combine.fragments)){
+  else{
     dat <- dat %>%
       dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
                     vol.vec = round(50/vec.conc, 2),

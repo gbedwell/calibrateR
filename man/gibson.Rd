@@ -36,7 +36,7 @@ gibson(
 
 \item{vec.mass}{The target mass of vector. If none given, assumed to be 50 ng.}
 
-\item{combine.fragments}{\code{"yes"} or \code{"no"}. Tells the function whether or not to consider all fragments as going into a single reaction.}
+\item{combine.fragments}{\code{TRUE} or \code{FALSE}. Tells the function whether or not to consider all fragments as going into a single reaction.}
 }
 \description{
 Calculates the volumes of vector and insert of a given series of Gibson assembly reactions
