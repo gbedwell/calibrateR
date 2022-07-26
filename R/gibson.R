@@ -34,7 +34,7 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
       dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) %>%
       magrittr::set_colnames(c("Insert","Vector","Vector Volume (µL)","Insert Volume (µL)",
                                "Volume Water (µL)","Volume MM (µL)"))
-  }
+    }
   if(isTRUE(combine.fragments)){
     dat <- dat %>%
       dplyr::mutate(pmol.vec = (vec.mass*1000)/(vec.len*650),
@@ -47,6 +47,6 @@ gibson <- function(insert.list, vector.list, insert.conc, insert.len, vec.conc, 
       dplyr::select(insert, vector, vol.vec, vol.insert, vol.water, vol.mix) %>%
       magrittr::set_colnames(c("Insert","Vector","Vector Volume (µL)","Insert Volume (µL)",
                                "Volume Water (µL)","Volume MM (µL)"))
-  }
+    }
   return(dat)
 }
