@@ -2,44 +2,35 @@
 % Please edit documentation in R/gibson.R
 \name{gibson}
 \alias{gibson}
-\title{Calculates the volumes of vector and insert of a given series of Gibson assembly reactions}
+\title{Calculate Gibson assembly reaction volumes}
 \usage{
 gibson(
-  insert.list,
-  vector.list,
   insert.conc,
   insert.len,
   vec.conc,
   vec.len,
-  molar.ratio,
-  final.vol,
+  molar.ratio = 3,
   vec.mass = 50,
-  combine.fragments = FALSE
+  final.vol = 10
 )
 }
 \arguments{
-\item{insert.list}{List of all inserts being put into plasmids}
+\item{insert.conc}{Vector of insert concentrations.}
 
-\item{vector.list}{List of all vectors being cloned into. Must enter one vector for each insert, even if there are duplicates.}
+\item{insert.len}{Vector of insert lengths in bp.}
 
-\item{insert.conc}{The concentration of insert in ng/µL}
+\item{vec.conc}{Vector concentration. Must be a single value.}
 
-\item{insert.len}{The insert size in bp}
+\item{vec.len}{Vector length. Must be a single value.}
 
-\item{vec.conc}{The concentration of the vector in ng/µL}
+\item{molar.ratio}{Molar ratio of insert:vector}
 
-\item{vec.len}{The linearized vector size in bp}
+\item{vec.mass}{Mass of vector}
 
-\item{molar.ratio}{The molar ratio of insert to vector}
-
-\item{final.vol}{The final volume of the reaction BEFORE addition of 2x reaction buffer.}
-
-\item{vec.mass}{The target mass of vector. If none given, assumed to be 50 ng.}
-
-\item{combine.fragments}{\code{TRUE} or \code{FALSE}. Tells the function whether or not to consider all fragments as going into a single reaction.}
+\item{final.vol}{Final volume of the reaction before addition of 2x master mix.}
 }
 \description{
-Calculates the volumes of vector and insert of a given series of Gibson assembly reactions
+Calculate Gibson assembly reaction volumes
 }
 \examples{
 gibson()

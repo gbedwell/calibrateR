@@ -2,35 +2,29 @@
 % Please edit documentation in R/uv_vis.R
 \name{uv_vis}
 \alias{uv_vis}
-\title{Calculates the concentration of protein, dsDNA, ssDNA, or ssRNA from absorbance values at 280 or 260 nm}
+\title{Determine macromolecule concentration from UV/Vis measurements.}
 \usage{
 uv_vis(
-  type = c("protein", "dsDNA", "ssDNA", "ssRNA"),
-  A260,
-  A280,
-  dil.fac,
-  path.length = NULL,
-  extinction.coeff = NULL,
-  mol.weight = NULL
+  abs,
+  ext = NULL,
+  df = 1,
+  plen = 1,
+  type = c("protein", "dsDNA", "ssDNA", "ssRNA")
 )
 }
 \arguments{
-\item{type}{The type of molecule being analyzed \code{protein},\code{dsDNA},\code{ssDNA},or \code{ssRNA}}
+\item{abs}{The measured absorbance value at the wavelength of interest.}
 
-\item{A260}{The absorbance value at 260 nm}
+\item{ext}{The extinction coefficient of the molecule. The units of the extinction coefficient determine the units of concentration.}
 
-\item{A280}{The absorbance value at 280 nm}
+\item{df}{The dilution factor of the measurement.}
 
-\item{dil.fac}{The dilution factor of the measured sample}
+\item{plen}{The path length of the measurement. Defaults to 1 cm.}
 
-\item{path.length}{The path length of the instrument in cm. Usually 1 cm.}
-
-\item{extinction.coeff}{The extinction coefficient of a given protein in molar units.}
-
-\item{mol.weight}{The molecular weight of a given protein. Necessary to return concentration in mg/mL.}
+\item{type}{The type of molecule being analyzed.}
 }
 \description{
-Calculates the concentration of protein, dsDNA, ssDNA, or ssRNA from absorbance values at 280 or 260 nm
+Determine macromolecule concentration from UV/Vis measurements.
 }
 \examples{
 uv_vis()

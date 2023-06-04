@@ -1,17 +1,18 @@
 Package: calibrateR
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R:
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Depends: R (>= 3.5.1), tidyverse           
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+Title: Streamline Standard Laboratory Calculations
+Version: 1.0.0
+Authors@R: 
+    person(
+      "Gregory", "Bedwell",
+      email = "gregoryjbedwell@gmail.com", 
+      role = c("aut", "cre", "cph"),
+      comment = c(ORCID = "0000-0003-0456-0032") )
+Description: calibrateR contains a collection of functions intended to streamline standard laboratory calculations. These currently include size exclusion column calibration, colorimetric assay calibration, Gibson assembly reaction setup, and UV/Vis concentration determination. The package is intended to be periodically updated to incorporate more functions/calculations.
+URL: https://github.com/gbedwell/calibrateR
+BugReports: https://github.com/gbedwell/calibrateR/issues  
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
+
