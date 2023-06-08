@@ -12,8 +12,9 @@
 #' @export
 cfu <- function( od, od.df, count.cf = 8E8, target.cfu, target.vol ){
 
-  if ( length( od.df > 1 ) & length( od.df ) != length( od ) ){
-    stop("It looks like you have multiple dilution factors, but the number of dilution factors does not match the number of OD readings!", call. = FALSE)
+  if ( length( od.df ) > 1 && length( od.df ) != length( od ) ){
+    stop("It looks like you have multiple dilution factors, but the number of dilution factors does not match the number of OD readings!",
+         call. = FALSE)
   }
 
   corr.od <- od * od.df
