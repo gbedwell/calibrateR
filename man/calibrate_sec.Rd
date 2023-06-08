@@ -14,13 +14,17 @@ calibrate_sec(
 )
 }
 \arguments{
+\item{vols}{The elution volumes of the standards.}
+
 \item{masses}{The known masses of each of the standards.}
+
+\item{parameter}{One of "mw" or "rh". Defines whether the column is being calibrated for molecular weight or hydrodynamic radius.}
 
 \item{void}{The void volume of the column.}
 
 \item{cv}{The column volume.}
 
-\item{stds}{The elution volumes of the standards.}
+\item{normalized}{Boolean. Whether or not the input elution volumes should be normalized relative to the given void and column volumes.}
 }
 \description{
 Calculates the calibration curve for a size exclusion column using standards of known mass. Standard mass values should be entered in kDa. Hydrodynamic radius values are calculated from the mass values in nm units. The hydrodynamic radius - molar mass relationship is defined in https://doi.org/10.1046/j.0014-2956.2001.02649.x

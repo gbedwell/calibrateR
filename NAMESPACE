@@ -2,7 +2,10 @@
 
 export(calibrate_colorimetric)
 export(calibrate_sec)
+export(cfu)
 export(gibson)
+export(mass_to_radius)
+export(normalize_ev)
 export(uv_vis)
 import(nls.multstart)
 importFrom(dplyr,arrange)

@@ -32,13 +32,13 @@ calibrate_colorimetric <- function( conc, abs, with.blank = TRUE, nrep = 1 ) {
 
   coefs <- coefficients( linfit )
   coefs <- c( coefs, blank )
-  names( coefs ) <- c( "intercept", "slope", "blank" )
+  names( coefs ) <- c( "intercept", "slope", "blank")
 
   fit <- function( a, df = 1, return.conc = TRUE ) {
     if ( isTRUE( return.conc ) ){
       ( ( ( a - coefs[3] ) - coefs[1] ) / coefs[2] ) * df
       } else {
-      coefs[1] + coefs[2] * a
+      coefs[1] + coefs[2] * ( a + blank )
         }
     }
   attr( fit, "coefficients" ) <- coefs

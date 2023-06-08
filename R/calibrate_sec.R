@@ -2,10 +2,12 @@
 #'
 #' Calculates the calibration curve for a size exclusion column using standards of known mass. Standard mass values should be entered in kDa. Hydrodynamic radius values are calculated from the mass values in nm units. The hydrodynamic radius - molar mass relationship is defined in https://doi.org/10.1046/j.0014-2956.2001.02649.x
 #'
+#'@param vols The elution volumes of the standards.
+#'@param masses The known masses of each of the standards.
+#'@param parameter One of "mw" or "rh". Defines whether the column is being calibrated for molecular weight or hydrodynamic radius.
+#'@param normalized Boolean. Whether or not the input elution volumes should be normalized relative to the given void and column volumes.
 #'@param void The void volume of the column.
 #'@param cv The column volume.
-#'@param stds The elution volumes of the standards.
-#'@param masses The known masses of each of the standards.
 #'
 #'@importFrom dplyr arrange
 #'@importFrom dplyr mutate
@@ -31,12 +33,11 @@ calibrate_sec <- function( vols, masses, parameter = c( "mw", "rh" ),
 
   df <- data.frame( vol = vols,
                     mw = masses ) |>
-    dplyr::arrange( desc( mw ) ) |>
-    dplyr::mutate(rh = ( 10^( ( -0.204 + ( 0.357 * log10( mw ) ) ) ) ) / 10 )
+    dplyr::mutate(rh = mass_to_radius( masses = mw ) )
 
   if ( isTRUE( normalized ) ){
     df <- df |>
-      dplyr::mutate( vol = ( vol - void ) / ( cv - void ) )
+      dplyr::mutate( vol = normalize_ev( vols = vol, void = void, cv = cv ) )
   }
 
   if ( parameter == "mw" ){
