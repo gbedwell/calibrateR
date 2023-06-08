@@ -4,7 +4,7 @@
 \alias{cfu}
 \title{Calculate CFU/mL dilutions}
 \usage{
-cfu(od, od.df, count.cf = 8e+08, target.cpmL, target.vol)
+cfu(od, od.df, count.cf = 8e+08, target.cfu, target.vol)
 }
 \arguments{
 \item{od}{The measured OD of the starter culture.}
@@ -13,7 +13,7 @@ cfu(od, od.df, count.cf = 8e+08, target.cpmL, target.vol)
 
 \item{count.cf}{The correction factor that relates OD to CFU/mL. Defaults to 8E8.}
 
-\item{target.cpmL}{The desired CFU/mL in the new culture.}
+\item{target.cfu}{The desired CFU/mL in the new culture.}
 
 \item{target.vol}{The desired volume of the new culture.}
 }
