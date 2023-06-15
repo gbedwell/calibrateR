@@ -12,7 +12,8 @@ gibson(
   n.frags,
   molar.ratio = 3,
   vec.mass = 50,
-  final.vol = 10
+  final.vol = 10,
+  ids = NULL
 )
 }
 \arguments{
@@ -24,11 +25,15 @@ gibson(
 
 \item{vec.len}{Vector length. Must be a single value.}
 
+\item{n.frags}{The number of fragments in each reaction.}
+
 \item{molar.ratio}{Molar ratio of insert:vector}
 
 \item{vec.mass}{Mass of vector}
 
 \item{final.vol}{Final volume of the reaction before addition of 2x master mix.}
+
+\item{ids}{Reaction identifiers. Can be NULL.}
 }
 \description{
 Calculate Gibson assembly reaction volumes

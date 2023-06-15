@@ -4,21 +4,29 @@
 #'@param insert.len Vector of insert lengths in bp.
 #'@param vec.conc Vector concentration. Must be a single value.
 #'@param vec.len Vector length. Must be a single value.
+#'@param n.frags The number of fragments in each reaction.
 #'@param molar.ratio Molar ratio of insert:vector
 #'@param vec.mass Mass of vector
 #'@param final.vol Final volume of the reaction before addition of 2x master mix.
+#'@param ids Reaction identifiers. Can be NULL.
 #'
 #'
 #'@examples gibson()
 #'
 #'@export
 gibson <- function( insert.conc, insert.len, vec.conc, vec.len, n.frags,
-                    molar.ratio = 3, vec.mass = 50, final.vol = 10 ) {
+                    molar.ratio = 3, vec.mass = 50, final.vol = 10, ids = NULL ) {
 
   if ( !all.equal( length( vec.conc ), length( vec.len ), length( n.frags ),
                    length( molar.ratio ), length( vec.mass ), length( final.vol ) ) ){
     stop( "vec.conc, vec.len, n.frags, molar.ratio, vec.mass, and final.vol vectors must be the same length.",
           call. = FALSE)
+  }
+
+  if ( !is.null( ids ) ) {
+    if ( length( ids ) != length( n.frags ) ){
+      stop( "ids vector must have the same length as n.frags vector.", call. = FALSE )
+    }
   }
 
   if ( length( insert.conc ) != length( insert.len ) ){
@@ -68,6 +76,10 @@ gibson <- function( insert.conc, insert.len, vec.conc, vec.len, n.frags,
     x <- x + f
 
     ll <- c( ll, list( df ) )
+  }
+
+  if ( !is.null( ids ) ){
+    names( ll ) <- ids
   }
 
   return( ll )
