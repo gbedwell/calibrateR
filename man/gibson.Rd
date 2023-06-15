@@ -9,6 +9,7 @@ gibson(
   insert.len,
   vec.conc,
   vec.len,
+  n.frags,
   molar.ratio = 3,
   vec.mass = 50,
   final.vol = 10

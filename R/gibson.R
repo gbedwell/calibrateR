@@ -12,41 +12,64 @@
 #'@examples gibson()
 #'
 #'@export
-gibson <- function( insert.conc, insert.len, vec.conc, vec.len,
+gibson <- function( insert.conc, insert.len, vec.conc, vec.len, n.frags,
                     molar.ratio = 3, vec.mass = 50, final.vol = 10 ) {
 
-  if ( length( vec.len ) > 1 | length( vec.conc ) > 1 ){
-    stop( "Only a single vector input is allowed.", call. = FALSE )
+  if ( !all.equal( length( vec.conc ), length( vec.len ), length( n.frags ),
+                   length( molar.ratio ), length( vec.mass ), length( final.vol ) ) ){
+    stop( "vec.conc, vec.len, n.frags, molar.ratio, vec.mass, and final.vol vectors must be the same length.",
+          call. = FALSE)
   }
 
   if ( length( insert.conc ) != length( insert.len ) ){
-    stop( "Insert concentration and insert length vectors contain different numbers of terms.", call. = FALSE )
+    stop( "insert.conc and insert.len vectors must be the same length.", call. = FALSE )
   }
 
-  nfrag <- length( insert.conc )
+  x <- 0
 
-  pmol.vec <- ( vec.mass * 1000 ) / ( vec.len * 650 )
-  vol.vec <- round( vec.mass / vec.conc, 2 )
+  ll <- list()
 
-  pmol.insert <- pmol.vec * molar.ratio
-  mass.insert <- ( pmol.insert *  ( insert.len * 650 ) ) / 1000
+  for ( i in seq_along( n.frags ) ){
+    f <- n.frags[i]
+    vc <- vec.conc[i]
+    vl <- vec.len[i]
+    mr <- molar.ratio[i]
+    vm <- vec.mass[i]
+    fv <- final.vol[i]
 
-  vol.insert <- round( mass.insert / insert.conc, 2 )
-  tot.insert.vol <- sum( vol.insert )
-  names( vol.insert ) <- paste( "Fragment", 1:nfrag, sep = " " )
+    start <- x + 1
+    end <- x + f
 
-  vol.water <- round( final.vol - ( vol.vec + tot.insert.vol ), 2 )
+    ic <- insert.conc[ start:end ]
+    il <- insert.len[ start:end ]
 
-  vol.mix <- final.vol
+    pmol.vec <- ( vm * 1000 ) / ( vl * 650 )
+    vol.vec <- round( vm / vc, 2 )
 
-  df <- data.frame( Volume = vol.insert )
+    pmol.insert <- pmol.vec * mr
+    mass.insert <- ( pmol.insert *  ( il * 650 ) ) / 1000
 
-  df <- rbind( df,
-               data.frame(
-                 Volume = c( Vector = vol.vec,
-                             Water = vol.water,
-                             `Master Mix` = vol.mix ) ) )
+    vol.insert <- round( mass.insert / ic, 2 )
+    tot.insert.vol <- sum( vol.insert )
+    names( vol.insert ) <- paste( "Fragment", 1:f, sep = " " )
 
-  return( df )
+    vol.water <- round( fv - ( vol.vec + tot.insert.vol ), 2 )
+
+    vol.mix <- fv
+
+    df <- data.frame( Volume = vol.insert )
+
+    df <- rbind( df,
+                 data.frame(
+                   Volume = c( Vector = vol.vec,
+                               Water = vol.water,
+                               `Master Mix` = vol.mix ) ) )
+
+    x <- x + f
+
+    ll <- c( ll, list( df ) )
+  }
+
+  return( ll )
 
 }
