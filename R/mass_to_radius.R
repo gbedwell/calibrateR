@@ -4,7 +4,7 @@
 #'@param mass The void volume of the column.
 #'
 #'
-#' @examples calibrate_sec( masses, void, cv, vols )
+#' @examples mass_to_radius( masses = c( 1E4, 3.7E4 ) )
 #'
 #' @export
 mass_to_radius <- function( masses ) {

@@ -15,13 +15,28 @@
 #'
 #'@export
 gibson <- function( insert.conc, insert.len, vec.conc, vec.len, n.frags,
-                    molar.ratio = 3, vec.mass = 50, final.vol = 10, ids = NULL ) {
+                    molar.ratio = 3, vec.mass = 50, final.vol = 5, ids = NULL ) {
 
-  if ( !all.equal( length( vec.conc ), length( vec.len ), length( n.frags ),
-                   length( molar.ratio ), length( vec.mass ), length( final.vol ) ) ){
+  if( length( vec.conc ) == 1 && length( vec.len ) == 1 &&
+      length( molar.ratio ) == 1 && length( vec.mass ) == 1 &&
+      length( final.vol ) == 1 && length( n.frags ) != 1 ){
+
+    vec.conc <- rep( vec.conc, length( n.frags ) )
+    vec.len <- rep( vec.len, length( n.frags ) )
+    molar.ratio <- rep( molar.ratio, length( n.frags ) )
+    vec.mass <- rep( vec.mass, length( n.frags ) )
+    final.vol <- rep( final.vol, length( n.frags ) )
+
+    }
+
+  if ( length( unique( c( length( vec.conc ), length( vec.len ),
+                          length( molar.ratio ),length( vec.mass ),
+                          length( final.vol ), length( n.frags ) ) ) ) != 1 ){
+
     stop( "vec.conc, vec.len, n.frags, molar.ratio, vec.mass, and final.vol vectors must be the same length.",
           call. = FALSE)
-  }
+
+      }
 
   if ( !is.null( ids ) ) {
     if ( length( ids ) != length( n.frags ) ){

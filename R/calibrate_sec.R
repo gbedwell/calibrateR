@@ -9,7 +9,6 @@
 #'@param void The void volume of the column.
 #'@param cv The column volume.
 #'
-#'@importFrom dplyr arrange
 #'@importFrom dplyr mutate
 #'@import nls.multstart
 #'
@@ -32,12 +31,12 @@ calibrate_sec <- function( vols, masses, parameter = c( "mw", "rh" ),
   }
 
   df <- data.frame( vol = vols,
-                    mw = masses ) |>
-    dplyr::mutate(rh = mass_to_radius( masses = mw ) )
+                    mw = masses )
+  df$rh <- mass_to_radius( masses = df$mw )
 
   if ( isTRUE( normalized ) ){
-    df <- df |>
-      dplyr::mutate( vol = normalize_ev( vols = vol, void = void, cv = cv ) )
+    df <- df
+    df$vol = normalize_ev( vols = df$vol, void = void, cv = cv )
   }
 
   if ( parameter == "mw" ){
