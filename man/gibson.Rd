@@ -12,7 +12,7 @@ gibson(
   n.frags,
   molar.ratio = 3,
   vec.mass = 50,
-  final.vol = 10,
+  final.vol = 5,
   ids = NULL
 )
 }

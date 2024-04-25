@@ -13,6 +13,6 @@ mass_to_radius(masses)
 Convert molecular weight values to hydrodynamic radius
 }
 \examples{
-calibrate_sec( masses, void, cv, vols )
+mass_to_radius( masses = c( 1E4, 3.7E4 ) )
 
 }
