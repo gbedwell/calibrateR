@@ -7,8 +7,10 @@ Authors@R:
       email = "gregoryjbedwell@gmail.com", 
       role = c("aut", "cre", "cph"),
       comment = c(ORCID = "0000-0003-0456-0032") )
-Description: calibrateR contains a collection of functions intended to streamline standard laboratory calculations. These currently include size exclusion column calibration, colorimetric assay calibration, Gibson assembly reaction setup, and UV/Vis concentration determination. The package is intended to be periodically updated to incorporate more functions/calculations.
-Imports: nls.multstart
+Description: calibrateR contains a collection of functions intended to streamline standard laboratory calculations.
+Imports: 
+  nls.multstart
+  dplyr
 URL: https://github.com/gbedwell/calibrateR
 BugReports: https://github.com/gbedwell/calibrateR/issues  
 License: GPL (>= 3)
